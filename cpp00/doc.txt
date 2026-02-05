@@ -1,0 +1,95 @@
+
+1. std::string
+
+---
+
+* **What it is:** A class from the C++ Standard Library used to store and manipulate sequences of characters.
+* **Advantages over char arrays:**
+
+  * Dynamic size (grows or shrinks automatically)
+  * Automatic memory management
+  * Built-in operations for concatenation, comparison, searching, and substrings
+* **Namespace:** std::string belongs to the `std` namespace, which organizes standard library functionality and avoids name collisions.
+* **Key properties:**
+
+  * Length, mutable content, automatic memory ownership
+* **Comparison with C-style strings:** safer, easier, and more flexible.
+
+---
+
+2. Classes and Access Specifiers
+
+---
+
+* **Class:** Blueprint for creating objects; defines attributes (data) and methods (behavior).
+* **Objects:** Instances of a class, each with its own state.
+* **Access specifiers:**
+
+  * `public`: Accessible from anywhere
+  * `private`: Accessible only within the class
+  * `protected`: Accessible within the class and its derived classes
+* **Encapsulation:** Access specifiers help control object state and maintain integrity.
+
+---
+
+3. Constructors and Destructors
+
+---
+
+* **Constructor:** Initializes an object; runs automatically when an object is created. Can be overloaded.
+* **Destructor:** Cleans up resources; runs automatically when an object goes out of scope. Prefixed with `~` and cannot take parameters.
+* **Object lifetime:**
+
+  * Start: Constructor runs
+  * Usage: Object interacts via public methods
+  * End: Destructor runs, releasing resources
+* **RAII (Resource Acquisition Is Initialization):** Pattern where resource allocation happens in the constructor and cleanup in the destructor.
+
+---
+
+4. Const Correctness
+
+---
+
+* **Purpose:** Prevent accidental modification of variables, parameters, or objects.
+* **Contexts:**
+
+  * `const` variable: Cannot change value after initialization
+  * `const` function parameter: Function cannot modify the argument
+  * `const` member function: Object state cannot be modified inside the function
+* **Pointers and const:**
+
+  * `T* ptr`: Pointer and data both mutable
+  * `const T* ptr`: Pointer mutable, data immutable
+  * `T* const ptr`: Pointer immutable, data mutable
+  * `const T* const ptr`: Both pointer and data immutable
+* **Benefits:** Safer code, communicates intent, allows compiler optimizations
+
+---
+
+5. Static Members
+
+---
+
+* **Static variable:** Shared among all objects; only one copy exists. Useful for counters or shared configuration.
+* **Static function:** Can access only static members, does not have a `this` pointer, callable using class name without creating an object.
+* **Advantages:** Memory efficiency, global-like access within class scope, logically belongs to class rather than individual objects.
+
+---
+
+## Summary Table: Core Concepts
+
+| Concept                    | Key Point                                        |
+| -------------------------- | ------------------------------------------------ |
+| std::string                | Dynamic, safe text storage and manipulation      |
+| Class                      | Blueprint for objects (attributes + methods)     |
+| Access specifiers          | Controls visibility: public, private, protected  |
+| Constructor                | Initializes object automatically                 |
+| Destructor                 | Cleans up object automatically                   |
+| Const correctness          | Protects variables, parameters, and object state |
+| Pointer const combinations | Pointer vs. data mutability control              |
+| Static members             | Shared among all objects of a class              |
+
+---
+
+This overview provides a strong foundation for understanding C++ object-oriented programming basics and safe memory management.
