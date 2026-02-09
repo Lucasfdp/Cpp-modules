@@ -6,7 +6,7 @@
 /*   By: luferna3 <luferna3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/28 06:23:36 by luferna3          #+#    #+#             */
-/*   Updated: 2025/12/28 06:23:37 by luferna3         ###   ########.fr       */
+/*   Updated: 2026/02/09 02:56:50 by luferna3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ int main(int ac, char **av)
 	for (int i = 1; i < ac; i++)
 	{
 		input += av[i];
-		if (i < ac - 1)
-			input += " ";
+		// if (i < ac - 1)
+		// 	input += " ";
 	}
 	megaphone(input);
 	return 0;

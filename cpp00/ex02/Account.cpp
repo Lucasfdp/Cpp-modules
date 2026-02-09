@@ -6,7 +6,7 @@
 /*   By: luferna3 <luferna3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/29 00:06:29 by luferna3          #+#    #+#             */
-/*   Updated: 2025/12/29 06:07:35 by luferna3         ###   ########.fr       */
+/*   Updated: 2026/02/09 03:29:01 by luferna3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ void	Account::_displayTimestamp(void)
 
 Account::Account(int initial_deposit)
 {
+	if (initial_deposit < 0)
+		initial_deposit = 0;
 	_accountIndex = _nbAccounts;
 	_amount = initial_deposit;
 	_nbDeposits = 0;
@@ -75,6 +77,8 @@ void	Account::makeDeposit(int deposit)
 {
 	int	p_amount = _amount;
 	
+	if (deposit < 0)
+		return ;
 	_amount += deposit;
 	_nbDeposits++;
 	
@@ -91,6 +95,8 @@ void	Account::makeDeposit(int deposit)
 
 bool	Account::makeWithdrawal(int withdrawal)
 {
+	if (withdrawal < 0)
+		return (false);
 	if (withdrawal > _amount)
 	{
 		_displayTimestamp();
