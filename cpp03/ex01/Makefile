@@ -6,7 +6,7 @@
 #    By: luferna3 <luferna3@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/02/05 23:28:47 by luferna3          #+#    #+#              #
-#    Updated: 2026/02/05 23:29:12 by luferna3         ###   ########.fr        #
+#    Updated: 2026/02/12 02:54:23 by luferna3         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 # Project
 # ==========================
 
-NAME        = ClapTrap
+NAME        = ScavTrap
 
 CXX         = c++
 CXXFLAGS    = -Wall -Wextra -Werror -std=c++98
@@ -23,7 +23,7 @@ CXXFLAGS    = -Wall -Wextra -Werror -std=c++98
 # Files
 # ==========================
 
-SRCS        = main.cpp 
+SRCS        = main.cpp ClapTrap.cpp ScavTrap.cpp
 OBJS        = $(SRCS:.cpp=.o)
 
 # ==========================
