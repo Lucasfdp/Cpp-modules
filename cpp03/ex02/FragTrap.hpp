@@ -1,40 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ScavTrap.hpp                                       :+:      :+:    :+:   */
+/*   FragTrap.hpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: luferna3 <luferna3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 02:54:48 by luferna3          #+#    #+#             */
-/*   Updated: 2026/02/13 03:12:53 by luferna3         ###   ########.fr       */
+/*   Updated: 2026/02/13 04:55:06 by luferna3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SCAVTRAP_HPP
-# define SCAVTRAP_HPP
+#ifndef FRAGTRAP_HPP
+# define FRAGTRAP_HPP
 
 # include "ClapTrap.hpp"
 
-class ScavTrap : public ClapTrap
+class FragTrap : public ClapTrap
 {
-	private:
-
-	bool	_guardMode;
-		
 	public:
 	
-		void	attack(const std::string& target);
-		void	showStatus() const;
-		void	guardGate();
+	void	attack(const std::string& target);
+	void	showStatus() const;
+	void	hiFiveGuys(void);
 		
-		bool	getGM(void) const;
-		void	setGM(const bool &value);
-		
-		ScavTrap();
-		ScavTrap(std::string name);
-		ScavTrap&	operator=(const ScavTrap& other);
-		ScavTrap(const ScavTrap &other);
-		~ScavTrap();
+		FragTrap();
+		FragTrap(std::string name);
+		FragTrap&	operator=(const FragTrap& other);
+		FragTrap(const FragTrap &other);
+		~FragTrap();
 };
 
 #endif
