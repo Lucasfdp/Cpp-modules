@@ -6,7 +6,7 @@
 /*   By: luferna3 <luferna3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 02:54:48 by luferna3          #+#    #+#             */
-/*   Updated: 2026/02/13 04:55:06 by luferna3         ###   ########.fr       */
+/*   Updated: 2026/02/14 04:48:29 by luferna3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ class FragTrap : public ClapTrap
 	
 	void	attack(const std::string& target);
 	void	showStatus() const;
-	void	hiFiveGuys(void);
+	void	highFivesGuys(void);
 		
 		FragTrap();
 		FragTrap(std::string name);

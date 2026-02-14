@@ -6,7 +6,7 @@
 /*   By: luferna3 <luferna3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 02:54:38 by luferna3          #+#    #+#             */
-/*   Updated: 2026/02/13 04:54:42 by luferna3         ###   ########.fr       */
+/*   Updated: 2026/02/14 04:48:23 by luferna3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	FragTrap::showStatus() const
 	<< "\nAttack damage: " << getAD() << std::endl;
 }
 
-void	FragTrap::hiFiveGuys(void)
+void	FragTrap::highFivesGuys(void)
 {
 	std::cout << "Would you care for the highest of fives?" << std::endl;
 }
