@@ -6,7 +6,7 @@
 /*   By: luferna3 <luferna3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/21 08:44:20 by luferna3          #+#    #+#             */
-/*   Updated: 2026/02/22 05:57:51 by luferna3         ###   ########.fr       */
+/*   Updated: 2026/02/26 22:10:11 by luferna3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void MateriaSource::learnMateria(AMateria* newMat)
 		if (_templates[i] == NULL)
 		{
 			_templates[i] = newMat->clone();
+			delete newMat;
 			break ;
 		}
 	}

@@ -6,7 +6,7 @@
 /*   By: luferna3 <luferna3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/21 06:21:21 by luferna3          #+#    #+#             */
-/*   Updated: 2026/02/22 05:16:45 by luferna3         ###   ########.fr       */
+/*   Updated: 2026/02/26 22:03:11 by luferna3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,17 @@
 
 Ice::Ice() : AMateria("ice")
 {
-	//setType("ice");
+
 }
 
 Ice::Ice(std::string const & type) : AMateria(type)
 {
-	//setType(type);
+
 }
 
 Ice::Ice(const Ice &other) : AMateria(other)
 {
-	//setType(other.getType());
+
 }
 
 Ice&	Ice::operator=(const Ice& other)

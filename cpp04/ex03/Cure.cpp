@@ -6,7 +6,7 @@
 /*   By: luferna3 <luferna3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/21 06:25:44 by luferna3          #+#    #+#             */
-/*   Updated: 2026/02/22 05:16:31 by luferna3         ###   ########.fr       */
+/*   Updated: 2026/02/26 22:03:41 by luferna3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ Cure::Cure() : AMateria("cure")
 
 Cure::Cure(std::string const & type) : AMateria(type)
 {
-	//setType(type);
+
 }
 
 Cure::Cure(const Cure &other) : AMateria(other)
 {	
-	//setType(other.getType());
+
 }
 
 Cure&	Cure::operator=(const Cure& other)
