@@ -5,17 +5,16 @@
 #                                                     +:+ +:+         +:+      #
 #    By: luferna3 <luferna3@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2026/02/14 05:56:38 by luferna3          #+#    #+#              #
-#    Updated: 2026/03/13 04:06:31 by luferna3         ###   ########.fr        #
+#    Created: 2026/03/13 04:02:12 by luferna3          #+#    #+#              #
+#    Updated: 2026/03/13 04:05:40 by luferna3         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
 
 # ==========================
 # Project
 # ==========================
 
-NAME        = Materia
+NAME        = TheyAreBureaucratsIDontRspectThem!
 
 CXX         = c++
 CXXFLAGS    = -Wall -Wextra -Werror -std=c++98
@@ -24,7 +23,7 @@ CXXFLAGS    = -Wall -Wextra -Werror -std=c++98
 # Files
 # ==========================
 
-SRCS        = main.cpp AMateria.cpp Character.cpp Cure.cpp Ice.cpp MateriaSource.cpp
+SRCS        = main.cpp Bureaucrat.cpp
 OBJS        = $(SRCS:.cpp=.o)
 
 # ==========================

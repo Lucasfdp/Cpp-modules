@@ -1,32 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   ShrubberyCreationForm.hpp                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: luferna3 <luferna3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/03 05:50:44 by luferna3          #+#    #+#             */
-/*   Updated: 2026/04/25 01:13:51 by luferna3         ###   ########.fr       */
+/*   Created: 2026/03/26 05:29:48 by luferna3          #+#    #+#             */
+/*   Updated: 2026/03/30 05:25:47 by luferna3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "HumanA.hpp"
-#include "HumanB.hpp"
+#pragma once
 
-int main()
+#include "AForm.hpp"
+
+#include <fstream>
+
+class ShrubberyCreationForm : public AForm
 {
-	Weapon club = Weapon("crude spiked club");
-	HumanA bob("Bob", club);
-	bob.attack();
-	club.setType("some other type of club");
-	bob.attack();
-	
-	Weapon club2 = Weapon("crude spiked club");
-	HumanB jim("Jim");
-	jim.setWeapon(club2);
-	jim.attack();
-	club2.setType("mace");
-	jim.attack();
+	private:
 
-	return (0);
-}
+		std::string _target;
+	
+	public:
+	
+		ShrubberyCreationForm(const std::string& target);
+		ShrubberyCreationForm(const ShrubberyCreationForm& other);
+		ShrubberyCreationForm&	operator=(const ShrubberyCreationForm& other);
+		~ShrubberyCreationForm();
+		
+		void	ex_action() const;
+};

@@ -6,7 +6,7 @@
 /*   By: luferna3 <luferna3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/28 22:09:06 by luferna3          #+#    #+#             */
-/*   Updated: 2026/02/09 02:49:04 by luferna3         ###   ########.fr       */
+/*   Updated: 2026/04/25 00:41:54 by luferna3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,18 +149,20 @@ void PhoneBook::searchContacts() const
 
 	std::cout << "Enter an index to view details: ";
 	std::string input;
-	if (!std::getline(std::cin, input))
-	{
-		std::cout << "\nEXITING\n" << std::endl;
-		return ;
-	}
-
 	int num = 0;
-	std::stringstream ss(input);
-	if (!(ss >> num) || num <= 0 || num > numContacts) {
-		std::cout << "Please enter a valid index" << std::endl;
-		return;
-	}
+	do {
+		if (!std::getline(std::cin, input))
+		{
+			std::cout << "\nEXITING\n" << std::endl;
+			return ;
+		}
+		std::stringstream ss(input);
+		if (!(ss >> num) || num <= 0 || num > numContacts)
+		{
+			std::cout << "Please enter a valid index: ";
+			continue ;
+		}
+	} while (!input.empty() || num <= 0 || num > numContacts);
 
 	// display full contact info
 	num--;

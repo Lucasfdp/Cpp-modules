@@ -1,32 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   Intern.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: luferna3 <luferna3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/03 05:50:44 by luferna3          #+#    #+#             */
-/*   Updated: 2026/04/25 01:13:51 by luferna3         ###   ########.fr       */
+/*   Created: 2026/03/30 05:56:24 by luferna3          #+#    #+#             */
+/*   Updated: 2026/03/31 05:40:25 by luferna3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "HumanA.hpp"
-#include "HumanB.hpp"
+#pragma once
 
-int main()
+#include <string>
+#include "AForm.hpp"
+
+class Intern
 {
-	Weapon club = Weapon("crude spiked club");
-	HumanA bob("Bob", club);
-	bob.attack();
-	club.setType("some other type of club");
-	bob.attack();
-	
-	Weapon club2 = Weapon("crude spiked club");
-	HumanB jim("Jim");
-	jim.setWeapon(club2);
-	jim.attack();
-	club2.setType("mace");
-	jim.attack();
-
-	return (0);
-}
+	public:
+		Intern();
+		Intern(const Intern& other);
+		Intern&	operator=(const Intern& other);
+		~Intern();
+		
+		AForm	*makeForm(const std::string& type, const std::string& target);
+};

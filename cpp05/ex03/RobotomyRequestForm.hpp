@@ -1,32 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   RobotomyRequestForm.hpp                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: luferna3 <luferna3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/03 05:50:44 by luferna3          #+#    #+#             */
-/*   Updated: 2026/04/25 01:13:51 by luferna3         ###   ########.fr       */
+/*   Created: 2026/03/26 05:29:44 by luferna3          #+#    #+#             */
+/*   Updated: 2026/03/30 05:07:18 by luferna3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "HumanA.hpp"
-#include "HumanB.hpp"
+#pragma once
 
-int main()
+#include "AForm.hpp"
+
+#include <cstdlib>
+#include <ctime>
+
+class RobotomyRequestForm : public AForm
 {
-	Weapon club = Weapon("crude spiked club");
-	HumanA bob("Bob", club);
-	bob.attack();
-	club.setType("some other type of club");
-	bob.attack();
-	
-	Weapon club2 = Weapon("crude spiked club");
-	HumanB jim("Jim");
-	jim.setWeapon(club2);
-	jim.attack();
-	club2.setType("mace");
-	jim.attack();
+	private:
 
-	return (0);
-}
+		std::string _target;
+	
+	public:
+	
+		RobotomyRequestForm(const std::string& target);
+		RobotomyRequestForm(const RobotomyRequestForm& other);
+		RobotomyRequestForm&	operator=(const RobotomyRequestForm& other);
+		~RobotomyRequestForm();
+		
+		void	ex_action() const;
+};

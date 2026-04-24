@@ -6,7 +6,7 @@
 /*   By: luferna3 <luferna3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/11 19:20:32 by luferna3          #+#    #+#             */
-/*   Updated: 2026/02/13 05:10:29 by luferna3         ###   ########.fr       */
+/*   Updated: 2026/04/25 01:15:11 by luferna3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,6 @@ int main(void)
 	// Frag1.showStatus();
 	// Frag2.showStatus();
 	// Frag3.showStatus();
-	Frag1.hiFiveGuys();
+	Frag1.hiFivesGuys();
 	return 0;
 }
