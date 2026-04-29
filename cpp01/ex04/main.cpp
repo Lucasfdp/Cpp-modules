@@ -6,7 +6,7 @@
 /*   By: luferna3 <luferna3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/03 05:58:04 by luferna3          #+#    #+#             */
-/*   Updated: 2026/01/11 04:09:10 by luferna3         ###   ########.fr       */
+/*   Updated: 2026/04/26 05:39:48 by luferna3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int main(int ac, char const *av[])
 	std::string newLine;
 	size_t	oldFound;
 	size_t	found;
-	
+
 	while (std::getline(input, line))
 	{
 		newLine.clear();
@@ -64,4 +64,3 @@ int main(int ac, char const *av[])
 	}
 	return (0);
 }
-
