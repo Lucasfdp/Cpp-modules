@@ -6,7 +6,7 @@
 /*   By: luferna3 <luferna3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 02:54:48 by luferna3          #+#    #+#             */
-/*   Updated: 2026/04/25 01:15:29 by luferna3         ###   ########.fr       */
+/*   Updated: 2026/04/30 02:09:03 by luferna3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,11 @@ class FragTrap : public ClapTrap
 	void	showStatus() const;
 	void	hiFivesGuys(void);
 		
-		FragTrap();
-		FragTrap(std::string name);
-		FragTrap&	operator=(const FragTrap& other);
-		FragTrap(const FragTrap &other);
-		~FragTrap();
+	FragTrap();
+	FragTrap(std::string name);
+	FragTrap&	operator=(const FragTrap& other);
+	FragTrap(const FragTrap &other);
+	~FragTrap();
 };
 
 #endif

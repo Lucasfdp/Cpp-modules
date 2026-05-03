@@ -5,17 +5,16 @@
 #                                                     +:+ +:+         +:+      #
 #    By: luferna3 <luferna3@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2026/02/14 05:56:31 by luferna3          #+#    #+#              #
-#    Updated: 2026/02/17 00:26:19 by luferna3         ###   ########.fr        #
+#    Created: 2025/12/30 03:58:09 by luferna3          #+#    #+#              #
+#    Updated: 2026/05/01 07:40:38 by luferna3         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
 
 # ==========================
 # Project
 # ==========================
 
-NAME        = Animals
+NAME = Animals
 
 CXX         = c++
 CXXFLAGS    = -Wall -Wextra -Werror -std=c++98
@@ -26,6 +25,20 @@ CXXFLAGS    = -Wall -Wextra -Werror -std=c++98
 
 SRCS        = main.cpp Animal.cpp Cat.cpp Dog.cpp WrongAnimal.cpp WrongCat.cpp Brain.cpp
 OBJS        = $(SRCS:.cpp=.o)
+TOTAL       = $(words $(SRCS))
+COMPILED    = 0
+
+MAKEFLAGS   += --no-print-directory
+
+# ==========================
+# Colours
+# ==========================
+
+GREEN   = \033[0;32m
+BLUE    = \033[0;34m
+CYAN    = \033[0;36m
+BOLD    = \033[1m
+RESET   = \033[0m
 
 # ==========================
 # Rules
@@ -35,19 +48,23 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	@$(CXX) $(CXXFLAGS) $(OBJS) -o $(NAME)
-	@$(MAKE) banner
+	@printf "\n$(GREEN)$(BOLD)  [$(NAME) compiled successfully]$(RESET)\n"
 
 %.o: %.cpp
+	@$(eval COMPILED := $(shell echo $$(($(COMPILED) + 1))))
+	@$(eval PCT := $(shell echo $$(($(COMPILED) * 100 / $(TOTAL)))))
+	@$(eval FILLED := $(shell if [ $(COMPILED) -eq $(TOTAL) ]; then echo 20; else echo $$(($(COMPILED) * 20 / $(TOTAL))); fi))
+	@$(eval EMPTY := $(shell echo $$(( 20 - $(FILLED)))))
 	@$(CXX) $(CXXFLAGS) -c $< -o $@
+	@bar=""; \
+	i=0; while [ $$i -lt $(FILLED) ]; do bar="$$bar$(GREEN)█$(RESET)"; i=$$((i+1)); done; \
+	i=0; while [ $$i -lt $(EMPTY) ]; do bar="$$bar░"; i=$$((i+1)); done; \
+	printf "\r\033[K$(CYAN)  Compiling $(BOLD)%-25s$(RESET)$(CYAN) [$$bar$(CYAN)] $(BOLD)%3d%%$(RESET)" \
+		"$<" "$(PCT)"
 
 # ==========================
 # Banner
 # ==========================
-GREEN  = \033[0;32m
-BLUE   = \033[0;34m
-CYAN   = \033[0;36m
-RESET  = \033[0m
-
 
 banner:
 	@printf "$(CYAN)\n"
@@ -57,24 +74,17 @@ banner:
 	@printf "<_____/\\_____/\\_____/\\__/   \\_____/\\_____/\\__/   \\_____/\\_____/_____/ \n"
 	@printf "$(RESET)\n"
 
-
-
-
 # ==========================
 # Cleaning
 # ==========================
 
 clean:
 	@rm -f $(OBJS)
-	@printf "$(BLUE)\n"
-	@printf "Cleansed"
-	@printf "$(RESET)\n"
+	@printf "$(BLUE)  Cleansed$(RESET)\n"
 
 fclean: clean
 	@rm -f $(NAME)
-	@printf "$(BLUE)\n"
-	@printf "More Cleansed"
-	@printf "$(RESET)\n"
+	@printf "$(BLUE)  More Cleansed$(RESET)\n"
 
 re: fclean all
 

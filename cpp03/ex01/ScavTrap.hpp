@@ -6,7 +6,7 @@
 /*   By: luferna3 <luferna3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 02:54:48 by luferna3          #+#    #+#             */
-/*   Updated: 2026/02/13 03:12:53 by luferna3         ###   ########.fr       */
+/*   Updated: 2026/04/30 03:20:28 by luferna3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ class ScavTrap : public ClapTrap
 {
 	private:
 
-	bool	_guardMode;
+		bool	_guardMode;
 		
 	public:
 	
