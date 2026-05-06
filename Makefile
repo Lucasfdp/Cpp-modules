@@ -1,112 +1,3 @@
-# # =========================
-# # CONFIG
-# # =========================
-
-# MODULES = cpp00 cpp01 cpp02 cpp03 cpp04 cpp05 cpp06 cpp07 cpp08 cpp09
-
-# MAKEFLAGS += --no-print-directory
-
-# .PHONY: all clean fclean re run module status
-
-# # =========================
-# # INTERNAL HELPER
-# # =========================
-
-# define run_in_exercises
-# 	for e in $$m/ex*; do \
-# 		if [ -d $$e ]; then \
-# 			echo "$(1) $$e"; \
-# 			$(MAKE) -C $$e $(2); \
-# 		fi; \
-# 	done
-# endef
-
-# # =========================
-# # BASIC TARGETS
-# # =========================
-
-# all:
-# 	@for m in $(MODULES); do \
-# 		if [ -d $$m ]; then \
-# 			$(call run_in_exercises,Building,); \
-# 		fi; \
-# 	done
-
-# clean:
-# 	@for m in $(MODULES); do \
-# 		if [ -d $$m ]; then \
-# 			$(call run_in_exercises,Cleaning,clean); \
-# 		fi; \
-# 	done
-
-# fclean:
-# 	@for m in $(MODULES); do \
-# 		if [ -d $$m ]; then \
-# 			$(call run_in_exercises,Fclean,fclean); \
-# 		fi; \
-# 	done
-
-# re: fclean all
-
-# # =========================
-# # EXTRA FUNCTIONALITY
-# # =========================
-
-# # Build + run specific exercise
-# # Usage: make run M=cpp00 E=ex01
-# run:
-# 	@if [ -z "$(M)" ] || [ -z "$(E)" ]; then \
-# 		echo "Usage: make run M=cppXX E=exXX"; \
-# 	else \
-# 		if [ ! -d "$(M)/$(E)" ]; then \
-# 			echo "Path $(M)/$(E) not found"; \
-# 			exit 1; \
-# 		fi; \
-# 		echo "Running $(M)/$(E)"; \
-# 		$(MAKE) -C $(M)/$(E); \
-# 		EXEC=$$(find $(M)/$(E) -maxdepth 1 -type f -perm -111 ! -name "*.o" ! -name "*.cpp" ! -name "*.hpp"); \
-# 		if [ -z "$$EXEC" ]; then \
-# 			echo "No executable found"; \
-# 		else \
-# 			$$EXEC; \
-# 		fi; \
-# 	fi
-
-# # Build a whole module
-# # Usage: make module M=cpp02
-# module:
-# 	@if [ -z "$(M)" ]; then \
-# 		echo "Usage: make module M=cppXX"; \
-# 	else \
-# 		if [ ! -d "$(M)" ]; then \
-# 			echo "Module $(M) not found"; \
-# 			exit 1; \
-# 		fi; \
-# 		for e in $(M)/ex*; do \
-# 			if [ -d $$e ]; then \
-# 				echo "Building $$e"; \
-# 				$(MAKE) -C $$e; \
-# 			fi; \
-# 		done \
-# 	fi
-
-# # Show build status
-# status:
-# 	@for m in $(MODULES); do \
-# 		if [ -d $$m ]; then \
-# 			for e in $$m/ex*; do \
-# 				if [ -d $$e ]; then \
-# 					EXEC=$$(find $$e -maxdepth 1 -type f -perm -111 ! -name "*.o"); \
-# 					if [ -n "$$EXEC" ]; then \
-# 						echo "$$e ✅ built"; \
-# 					else \
-# 						echo "$$e ❌ not built"; \
-# 					fi; \
-# 				fi; \
-# 			done \
-# 		fi; \
-# 	done
-
 # =========================
 # CONFIG
 # =========================
@@ -128,7 +19,7 @@ MAGENTA = \033[0;35m
 BOLD    = \033[1m
 RESET   = \033[0m
 
-.PHONY: all clean fclean re run module status help banner
+.PHONY: all clean fclean re run module status help banner push
 
 # =========================
 # INTERNAL HELPER
@@ -292,18 +183,32 @@ cloc:
 	done
 	@printf "\n"
 
+# Git add, commit and push
+# Usage: make push M="your commit message"
+push:
+	@if [ -z "$(M)" ]; then \
+		printf "$(RED)  Usage: make push M=\"your commit message\"$(RESET)\n"; \
+	else \
+		printf "$(CYAN)$(BOLD)\n  Pushing to remote...$(RESET)\n\n"; \
+		git add . && \
+		git commit -m "$(M)" && \
+		git push && \
+		printf "$(GREEN)$(BOLD)  [Pushed successfully]$(RESET)\n\n"; \
+	fi
+
 # Help
 help:
 	@printf "\n$(CYAN)$(BOLD)  cpp modules — available commands$(RESET)\n\n"
-	@printf "  $(GREEN)make$(RESET)                    — build all modules\n"
-	@printf "  $(GREEN)make re$(RESET)                 — clean and rebuild all\n"
-	@printf "  $(GREEN)make clean$(RESET)              — remove object files\n"
-	@printf "  $(GREEN)make fclean$(RESET)             — remove objects and binaries\n"
-	@printf "  $(GREEN)make module M=cppXX$(RESET)     — build a specific module\n"
-	@printf "  $(GREEN)make run M=cppXX E=exXX$(RESET) — build and run a specific exercise\n"
-	@printf "  $(GREEN)make status$(RESET)             — show build status of all exercises\n"
-	@printf "  $(GREEN)make cloc$(RESET)               — count lines of code per module\n"
-	@printf "  $(GREEN)make help$(RESET)               — show this message\n\n"
+	@printf "  $(GREEN)make$(RESET)                         — build all modules\n"
+	@printf "  $(GREEN)make re$(RESET)                      — clean and rebuild all\n"
+	@printf "  $(GREEN)make clean$(RESET)                   — remove object files\n"
+	@printf "  $(GREEN)make fclean$(RESET)                  — remove objects and binaries\n"
+	@printf "  $(GREEN)make module M=cppXX$(RESET)          — build a specific module\n"
+	@printf "  $(GREEN)make run M=cppXX E=exXX$(RESET)      — build and run a specific exercise\n"
+	@printf "  $(GREEN)make status$(RESET)                  — show build status of all exercises\n"
+	@printf "  $(GREEN)make cloc$(RESET)                    — count lines of code per module\n"
+	@printf "  $(GREEN)make push M=\"msg\"$(RESET)            — git add, commit and push\n"
+	@printf "  $(GREEN)make help$(RESET)                    — show this message\n\n"
 
 # =========================
 # BANNER
