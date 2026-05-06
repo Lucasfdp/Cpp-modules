@@ -6,13 +6,13 @@
 /*   By: luferna3 <luferna3@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/27 23:12:31 by luferna3          #+#    #+#             */
-/*   Updated: 2026/04/27 23:15:41 by luferna3         ###   ########.fr       */
+/*   Updated: 2026/05/06 03:33:53 by luferna3         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include <cstdint>
+#include <stdint.h>
 #include <string>
 
 struct Data {

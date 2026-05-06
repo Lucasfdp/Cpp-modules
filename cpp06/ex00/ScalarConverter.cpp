@@ -1,39 +1,20 @@
 #include "ScalarConverter.hpp"
-
-// ScalarConverter::ScalarConverter()
-// {
-
-// }
-
-// ScalarConverter::ScalarConverter(const ScalarConverter& other)
-// {
-// 	(void)other;
-// }
-
-// ScalarConverter& ScalarConverter::operator=(const ScalarConverter& other)
-// {
-// 	(void)other;
-// 	return (*this);
-// }
-
-// ScalarConverter::~ScalarConverter()
-// {
-
-// }
+#include <cerrno>
+#include <cstdlib>
 
 bool isPseudoLiteral(const std::string& s)
 {
     return (s == "-inff" || s == "+inff" || s == "nanf" ||
             s == "-inf"  || s == "+inf"  || s == "nan");
 }
- 
+
 // ─── Pseudo-literal handler ──────────────────────────────────────────────────
- 
+
 void handlePseudo(const std::string& s)
 {
     std::cout << "char: impossible" << std::endl;
     std::cout << "int: impossible"  << std::endl;
- 
+
     if (s == "-inff" || s == "-inf")
     {
         std::cout << "float: -inff"  << std::endl;
@@ -50,11 +31,12 @@ void handlePseudo(const std::string& s)
         std::cout << "double: nan"   << std::endl;
     }
 }
- 
+
 // ─── Type detection ───────────────────────────────────────────────────────────
- 
+
 /*  Rules (applied in this order so there is no ambiguity):
- *   CHAR   – exactly "'x'" where x is a single printable character
+ *   CHAR   – exactly "'x'" where x is a single printable character,
+ *            OR a bare single non-digit printable character (e.g. h)
  *   INT    – optional leading sign, then digits only, no dot, no 'f'/'F'
  *   FLOAT  – has a dot OR an 'f'/'F' suffix (or both); ends in 'f'/'F'
  *   DOUBLE – has a dot, no 'f'/'F' suffix
@@ -64,12 +46,15 @@ Type detectType(const std::string& s)
 {
     if (s.empty())
         return INVALID;
- 
-    // CHAR: 'x'
+
+    // CHAR: 'x' (with quotes)
     if (s.size() == 3 && s[0] == '\'' && s[2] == '\'')
         return CHAR;
- 
-    // Check if the string is a valid integer
+
+    // CHAR: bare single non-digit printable character (e.g. h, @, !)
+    if (s.size() == 1 && std::isprint(static_cast<unsigned char>(s[0])) && !std::isdigit(s[0]))
+        return CHAR;
+
     {
         size_t i = 0;
         if (s[i] == '-' || s[i] == '+') ++i;
@@ -81,16 +66,15 @@ Type detectType(const std::string& s)
             if (std::isdigit(s[i]))      { hasDigit = true; }
             else if (s[i] == '.')
             {
-                if (hasDot) return INVALID;  // reject 1.2.3
+                if (hasDot) return INVALID;
                 hasDot = true;
             }
             else if (s[i] == 'f' || s[i] == 'F')
             {
-                // 'f' must be the last character
                 if (i != s.size() - 1)   return INVALID;
                 hasF = true;
             }
-            else return INVALID;          // unexpected character
+            else return INVALID;
         }
         if (!hasDigit) return INVALID;
         if (hasF)      return FLOAT;
@@ -98,41 +82,54 @@ Type detectType(const std::string& s)
         return INT;
     }
 }
- 
+
 // ─── String → double ─────────────────────────────────────────────────────────
- 
-double parseToDouble(const std::string& s, Type type)
+
+bool parseToDouble(const std::string& s, Type type, double& value)
 {
-    try
+    if (type == CHAR)
     {
-        if (type == CHAR)
-            return static_cast<double>(s[1]);   // middle character of 'x'
- 
-        if (type == INT)
-            return static_cast<double>(std::stoi(s));
- 
-        if (type == FLOAT)
-        {
-            // Parse as double to preserve full range, then range-check in printAll
-            std::string tmp = s.substr(0, s.size() - 1);
-            return std::stod(tmp);
-        }
- 
-        // DOUBLE
-        return std::stod(s);
+        // handle both 'x' (quoted) and bare x
+        char c = (s.size() == 1) ? s[0] : s[1];
+        value = static_cast<double>(c);
+        return true;
     }
-    catch (const std::out_of_range&)
+
+    if (type == INT)
     {
-        throw;   // let convert() catch and print "impossible"
+        char* end;
+        errno = 0;
+        long val = std::strtol(s.c_str(), &end, 10);
+        if (errno == ERANGE || *end != '\0')
+            return false;
+        value = static_cast<double>(val);
+        return true;
     }
-    catch (const std::invalid_argument&)
+
+    if (type == FLOAT)
     {
-        throw;
+        std::string tmp = s.substr(0, s.size() - 1); // strip 'f'
+        char* end;
+        errno = 0;
+        double val = std::strtod(tmp.c_str(), &end);
+        if (errno == ERANGE || *end != '\0')
+            return false;
+        value = val;
+        return true;
     }
+
+    // DOUBLE
+    char* end;
+    errno = 0;
+    double val = std::strtod(s.c_str(), &end);
+    if (errno == ERANGE || *end != '\0')
+        return false;
+    value = val;
+    return true;
 }
- 
+
 // ─── Print all four conversions ───────────────────────────────────────────────
- 
+
 void printAll(double value)
 {
     // --- char ---
@@ -142,7 +139,7 @@ void printAll(double value)
         std::cout << "char: Non displayable" << std::endl;
     else
         std::cout << "char: '" << static_cast<char>(value) << "'" << std::endl;
- 
+
     // --- int ---
     if (std::isnan(value) || std::isinf(value)
         || value > static_cast<double>(std::numeric_limits<int>::max())
@@ -150,7 +147,7 @@ void printAll(double value)
         std::cout << "int: impossible" << std::endl;
     else
         std::cout << "int: " << static_cast<int>(value) << std::endl;
- 
+
     // --- float ---
     float fval = static_cast<float>(value);
     std::cout << std::fixed << std::setprecision(1);
@@ -160,7 +157,7 @@ void printAll(double value)
         std::cout << "float: nanf" << std::endl;
     else
         std::cout << "float: " << fval << "f" << std::endl;
- 
+
     // --- double ---
     if (std::isinf(value))
         std::cout << "double: " << (value > 0 ? "+inf" : "-inf") << std::endl;
@@ -169,9 +166,9 @@ void printAll(double value)
     else
         std::cout << "double: " << value << std::endl;
 }
- 
+
 // ─── Public entry point ───────────────────────────────────────────────────────
- 
+
 void ScalarConverter::convert(const std::string& s)
 {
     if (isPseudoLiteral(s))
@@ -179,7 +176,7 @@ void ScalarConverter::convert(const std::string& s)
         handlePseudo(s);
         return;
     }
- 
+
     Type type = detectType(s);
     if (type == INVALID)
     {
@@ -189,13 +186,9 @@ void ScalarConverter::convert(const std::string& s)
         std::cout << "double: impossible" << std::endl;
         return;
     }
- 
+
     double value;
-    try
-    {
-        value = parseToDouble(s, type);
-    }
-    catch (...)
+    if (!parseToDouble(s, type, value))
     {
         std::cout << "char: impossible"   << std::endl;
         std::cout << "int: impossible"    << std::endl;
@@ -203,7 +196,5 @@ void ScalarConverter::convert(const std::string& s)
         std::cout << "double: impossible" << std::endl;
         return;
     }
- 
     printAll(value);
 }
- 
