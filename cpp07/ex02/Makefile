@@ -6,7 +6,7 @@
 #    By: luferna3 <luferna3@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/04/30 03:38:33 by luferna3          #+#    #+#              #
-#    Updated: 2026/05/06 05:00:13 by luferna3         ###   ########.fr        #
+#    Updated: 2026/05/06 05:23:53 by luferna3         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ CXXFLAGS    = -Wall -Wextra -Werror -std=c++98
 # Files
 # ==========================
 
-SRCS        = main.cpp Array.cpp
+SRCS        = main.cpp
 OBJS        = $(SRCS:.cpp=.o)
 TOTAL       = $(words $(SRCS))
 COMPILED    = 0
