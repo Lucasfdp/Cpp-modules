@@ -6,7 +6,7 @@
 #    By: luferna3 <luferna3@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/05/14 03:25:17 by luferna3          #+#    #+#              #
-#    Updated: 2026/05/15 04:44:09 by luferna3         ###   ########.fr        #
+#    Updated: 2026/05/15 05:46:58 by luferna3         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ CXXFLAGS    = -Wall -Wextra -Werror -std=c++98
 # Files
 # ==========================
 
-SRCS        = main.cpp BitcoinExchange.cpp
+SRCS        = BitcoinExchange.cpp main.cpp
 OBJS        = $(SRCS:.cpp=.o)
 TOTAL       = $(words $(SRCS))
 COMPILED    = 0

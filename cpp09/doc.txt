@@ -1,0 +1,524 @@
+# CPP09 Evaluation Notes
+
+================================================================================
+EX00 — BITCOIN EXCHANGE
+=======================
+
+## WHAT THE EXERCISE ASKS
+
+The goal is to:
+
+* Read a CSV database containing Bitcoin exchange rates by date.
+* Read a second input file containing:
+  date | value
+* Multiply the value by the Bitcoin exchange rate for that date.
+* If the exact date does not exist:
+  use the closest LOWER date.
+
+Example:
+Input:
+2011-01-09 | 2
+
+```
+DB:
+	2011-01-03 -> 0.3
+	2011-01-10 -> 0.5
+
+Result:
+	Use 2011-01-03 because it is the closest lower date.
+
+KEY RULE:
+NEVER use the upper date.
+```
+
+---
+
+## CONTAINER USED
+
+Container:
+std::map<std::string, double>
+
+Why map:
+
+* Stores key/value pairs.
+* Automatically sorts keys.
+* Provides logarithmic lookup.
+* Perfect for date searching.
+
+Because dates use:
+YYYY-MM-DD
+
+lexicographical string comparison works naturally.
+
+Example:
+"2011-01-04" > "2011-01-03"
+
+So no custom date object is needed.
+
+---
+
+## IMPORTANT FUNCTION — lower_bound
+
+Core logic:
+std::map<std::string, double>::const_iterator it;
+it = _db.lower_bound(date);
+
+lower_bound returns:
+first element >= date
+
+Cases:
+
+1. Exact match
+   return it->second
+
+2. No exact match
+   --it
+   return closest lower date
+
+3. Date before database start
+   handle safely
+
+Important:
+Never decrement begin().
+That is undefined behavior.
+
+---
+
+## PARSING STRATEGY
+
+Input format:
+date | value
+
+Parsing steps:
+
+1. Find '|'
+2. Split date/value
+3. Trim whitespace
+4. Validate date
+5. Validate value
+6. Compute exchange
+
+---
+
+## DATE VALIDATION
+
+Checks:
+
+* Length == 10
+* '-' at index 4 and 7
+* All other chars are digits
+* Month between 1-12
+* Day between 1-31
+
+Possible improvement:
+
+* Leap year handling
+* Exact month/day limits
+
+Examples evaluators may test:
+2011-99-99
+2011-02-30
+2012-02-29
+
+---
+
+## VALUE VALIDATION
+
+Rules:
+
+* Must be numeric
+* Must be positive
+* Must be <= 1000
+
+Errors:
+negative -> "not a positive number."
+>1000 -> "too large a number."
+
+---
+
+## POINTS TO HIGHLIGHT IN EVALUATION
+
+Mention:
+
+* Why map was the best container choice.
+* Why lower_bound solves the lower-date requirement.
+* Why YYYY-MM-DD works lexicographically.
+* Separation of concerns:
+
+  * database loading
+  * parsing
+  * validation
+  * rate lookup
+
+Mention complexity:
+map lookup is O(log n)
+
+---
+
+## TRICKY QUESTIONS + ANSWERS
+
+Q: Why use map instead of vector?
+A:
+Map keeps dates sorted automatically and provides efficient logarithmic lookup with lower_bound.
+
+Q: Why does string comparison work for dates?
+A:
+Because the format is YYYY-MM-DD, the most significant units come first.
+
+Q: What does lower_bound return?
+A:
+The first element greater than or equal to the searched key.
+
+Q: Why step back with --it?
+A:
+Because the subject wants the closest LOWER date.
+
+Q: What happens if lower_bound returns begin()?
+A:
+The searched date is before all database entries.
+
+Q: Why not use atoi?
+A:
+atoi cannot detect invalid input safely.
+
+Q: Complexity of map insertion/search?
+A:
+O(log n)
+
+================================================================================
+EX01 — RPN
+==========
+
+## WHAT THE EXERCISE ASKS
+
+Implement a Reverse Polish Notation calculator.
+
+Input example:
+"8 9 * 9 -"
+
+Rules:
+
+* Operands are single digits.
+* Supported operators:
+
+  * * * /
+* No parentheses.
+* Expression evaluated left to right using stack logic.
+
+---
+
+## CONTAINER USED
+
+Container:
+std::stack<double>
+
+Why stack:
+RPN is naturally LIFO.
+
+Example:
+8 9 *
+
+Process:
+push 8
+push 9
+pop 9
+pop 8
+compute
+push result
+
+Perfect stack behavior.
+
+---
+
+## ALGORITHM
+
+For each token:
+
+If number:
+stack.push(number)
+
+If operator:
+pop b
+pop a
+compute a OP b
+push result
+
+Important:
+order matters
+
+For subtraction:
+a - b
+
+NOT:
+b - a
+
+---
+
+## ERROR HANDLING
+
+Cases:
+
+* Invalid token
+* Not enough operands
+* Division by zero
+* Extra operands remaining
+
+Examples:
+"1 +" -> invalid
+"1 2 3 +" -> invalid
+"1 0 /" -> division by zero
+
+---
+
+## POINTS TO HIGHLIGHT IN EVALUATION
+
+Mention:
+
+* Why stack is ideal for RPN.
+* Operators require two operands.
+* Importance of operand order.
+* Final stack must contain exactly one value.
+
+Complexities:
+push/pop/top are O(1)
+
+---
+
+## TRICKY QUESTIONS + ANSWERS
+
+Q: Why use stack instead of vector?
+A:
+The exercise naturally follows LIFO behavior.
+
+Q: Why does order matter?
+A:
+Subtraction/division are not commutative.
+
+Q: Why check stack size before operator?
+A:
+Need two operands for every operation.
+
+Q: Why check stack size at the end?
+A:
+A valid expression must leave exactly one result.
+
+Q: Complexity of stack operations?
+A:
+O(1)
+
+Q: What container does std::stack use internally?
+A:
+By default it uses std::deque.
+
+================================================================================
+EX02 — PMERGEME
+===============
+
+## WHAT THE EXERCISE ASKS
+
+Implement the Ford-Johnson merge-insertion sort algorithm.
+
+Requirements:
+
+* Use at least two containers.
+* Handle at least 3000 integers.
+* Compare timings between containers.
+
+Containers used:
+std::vector<int>
+std::deque<int>
+
+---
+
+## GENERAL IDEA OF FORD-JOHNSON
+
+The algorithm tries to minimise comparisons.
+
+Main steps:
+
+1. Pair elements
+2. Sort inside pairs
+3. Winners go to main chain
+4. Losers go to pending chain
+5. Sort main chain
+6. Insert pending elements using Jacobsthal order
+
+---
+
+## YOUR IMPLEMENTATION
+
+Pipeline:
+
+1. Parse input
+2. Pair numbers
+3. Put larger numbers into main
+4. Put smaller numbers into pend
+5. Sort main chain
+6. Insert pend into main using binary search
+7. Handle straggler if odd count
+
+---
+
+## WHY VECTOR
+
+Advantages:
+
+* Contiguous memory
+* Cache friendly
+* Fast iteration/access
+
+Usually faster in practice.
+
+---
+
+## WHY DEQUE
+
+Advantages:
+
+* Efficient front/back insertion
+* Different memory model
+* Good comparison against vector
+
+---
+
+## JACOBSTHAL SEQUENCE
+
+Sequence:
+0 1 1 3 5 11 21 ...
+
+Used to determine insertion order.
+
+Purpose:
+Reduce number of comparisons.
+
+---
+
+## BINARY SEARCH
+
+Used to insert elements efficiently.
+
+Complexity:
+O(log n) search
+
+Insertion itself:
+vector -> O(n)
+deque  -> O(n)
+
+---
+
+## TIMING
+
+You measured:
+
+* Full sorting process
+* Using clock()
+* Converted to microseconds
+
+---
+
+## IMPORTANT THING TO SAY
+
+Your implementation follows the Ford-Johnson structure:
+
+* pairing
+* winner/loser separation
+* Jacobsthal insertion
+* binary insertion
+
+You simplified:
+main chain sorting uses std::sort
+
+This is important to mention honestly.
+
+---
+
+## TRICKY QUESTIONS + ANSWERS
+
+Q: Why use two containers?
+A:
+The subject explicitly requires comparing different STL containers.
+
+Q: Why is vector usually faster?
+A:
+Contiguous memory improves cache locality.
+
+Q: Why use binary search?
+A:
+To reduce comparisons during insertion.
+
+Q: Complexity of vector insertion?
+A:
+O(n) because elements shift.
+
+Q: What is the purpose of Jacobsthal numbers?
+A:
+They determine insertion order that minimises comparisons.
+
+Q: Why separate winners and losers?
+A:
+Winners create the sorted main chain, losers are inserted later.
+
+Q: What is a straggler?
+A:
+The leftover element when input size is odd.
+
+Q: Is your implementation fully recursive Ford-Johnson?
+A:
+No. The winner chain uses std::sort for simplification, but the insertion structure follows Ford-Johnson principles.
+
+Q: Why compare vector and deque timings?
+A:
+To observe performance differences caused by different memory layouts and insertion costs.
+
+================================================================================
+GENERAL STL QUESTIONS EVALUATORS MAY ASK
+========================================
+
+Q: Difference between vector and deque?
+A:
+Vector uses contiguous memory.
+Deque uses segmented memory.
+
+Q: Why is vector cache friendly?
+A:
+Elements are stored continuously in memory.
+
+Q: Complexity of vector random access?
+A:
+O(1)
+
+Q: Complexity of map lookup?
+A:
+O(log n)
+
+Q: Why is map ordered?
+A:
+Internally implemented as a balanced binary search tree.
+
+Q: What is usually used internally for map?
+A:
+Red-black tree.
+
+Q: Difference between stack and deque?
+A:
+Stack is a container adaptor.
+Deque is a real container.
+
+Q: Why are STL containers useful?
+A:
+They provide tested, efficient data structures with standard interfaces.
+
+================================================================================
+IMPORTANT FINAL ADVICE
+======================
+
+During evaluation:
+
+* Explain the reasoning behind container choice.
+* Explain complexity when asked.
+* Be honest about simplifications.
+* Focus on understanding, not memorisation.
+
+If stuck:
+Draw examples manually.
+Evaluators care more about understanding than perfect wording.
