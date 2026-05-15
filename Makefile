@@ -207,7 +207,7 @@ help:
 	@printf "  $(GREEN)make run M=cppXX E=exXX$(RESET)      — build and run a specific exercise\n"
 	@printf "  $(GREEN)make status$(RESET)                  — show build status of all exercises\n"
 	@printf "  $(GREEN)make cloc$(RESET)                    — count lines of code per module\n"
-	@printf "  $(GREEN)make push M=\"msg\"$(RESET)          — git add, commit and push\n"
+	@printf "  $(GREEN)make push M=\"msg\"$(RESET)            — git add, commit and push\n"
 	@printf "  $(GREEN)make help$(RESET)                    — show this message\n\n"
 
 # =========================

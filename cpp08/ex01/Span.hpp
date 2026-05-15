@@ -1,5 +1,4 @@
-#ifndef SPAN_HPP
-# define SPAN_HPP
+#pragma once
 
 # include <vector>
 # include <stdexcept>
@@ -9,28 +8,27 @@
 class Span
 {
 public:
-    Span(unsigned int n);
-    Span(const Span &other);
-    Span &operator=(const Span &other);
-    ~Span();
+	Span(unsigned int n);
+	Span(const Span &other);
+	Span &operator=(const Span &other);
+	~Span();
 
-    void        addNumber(int n);
-    int         shortestSpan() const;
-    int         longestSpan() const;
+	void        addNumber(int n);
+	int         shortestSpan() const;
+	int         longestSpan() const;
 
-    // Range-based add
-    template <typename Iterator>
-    void addRange(Iterator begin, Iterator end)
-    {
-        for (Iterator it = begin; it != end; ++it)
-            addNumber(*it);
-    }
+	// Range-based add
+	template <typename Iterator>
+	void addRange(Iterator begin, Iterator end)
+	{
+		for (Iterator it = begin; it != end; ++it)
+			addNumber(*it);
+	}
 
 private:
-    unsigned int        _max;
-    std::vector<int>    _data;
+	unsigned int        _max;
+	std::vector<int>    _data;
 
-    Span(); // not allowed without size
+	Span(); // not allowed without size
 };
 
-#endif
